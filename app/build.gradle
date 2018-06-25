@@ -1,10 +1,14 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
+
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('api.keys.properties').newDataInputStream())
+    final openWeatherAppId = properties.getProperty('open.weather.app.id')
+
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.openweathermap.app.weatherapp"
@@ -18,16 +22,63 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField 'String', 'OPEN_WEATHER_API_KEY', "\"$openWeatherAppId\""
+        }
+        debug {
+            buildConfigField 'String', 'OPEN_WEATHER_API_KEY', "\"$openWeatherAppId\""
         }
     }
 }
 
 dependencies {
+
+    final verDagger = '2.16'
+    final verSupportLib = '28.0.0-alpha3'
+    final verRetrofit = '2.4.0'
+    final verOkHttpInterceptor = '3.10.0'
+    final verRxJava = '2.1.14'
+    final verRxAndroid = '2.0.2'
+    final verButterKnife = '8.8.1'
+    final verAssertJ = '3.10.0'
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:28.0.0-alpha3'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "com.android.support:appcompat-v7:$verSupportLib"
+    implementation "com.android.support:support-v4:$verSupportLib"
+    implementation "com.android.support:design:$verSupportLib"
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
+    /**
+     * Architecture
+     */
+    implementation "com.google.dagger:dagger:$verDagger"
+    kapt "com.google.dagger:dagger-compiler:$verDagger"
+
+    /**
+     * UI utils
+     */
+    implementation "com.jakewharton:butterknife:$verButterKnife"
+    kapt "com.jakewharton:butterknife-compiler:$verButterKnife"
+
+    /**
+     * Network
+     */
+    implementation "com.squareup.retrofit2:retrofit:$verRetrofit"
+    implementation "com.squareup.retrofit2:converter-gson:$verRetrofit"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$verRetrofit"
+    implementation "com.squareup.okhttp3:logging-interceptor:$verOkHttpInterceptor"
+
+    /**
+     * Utils
+     */
+    implementation "io.reactivex.rxjava2:rxjava:$verRxJava"
+    implementation "io.reactivex.rxjava2:rxandroid:$verRxAndroid"
+
+    /**
+     * Tests
+     */
+    testImplementation "org.assertj:assertj-core:$verAssertJ"
 }
