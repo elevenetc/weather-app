@@ -6,5 +6,5 @@ import io.reactivex.Single
 interface WeatherModel {
     fun findByName(name: String): Single<Weather>
     fun findByZip(zip: String): Single<Weather>
-    fun findByLocation(lat: Double, lon: Double): Single<Weather>
+    fun findWeatherAtCurrentLocation(): Single<Weather>
 }

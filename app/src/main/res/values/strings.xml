@@ -10,4 +10,7 @@
     <string name="looking_for_weather">Looking for weather</string>
     <string name="edit_search_name_zip">Zip code</string>
     <string name="search_for_current_location">Search for current location</string>
+    <string name="location_is_unavailable">Location is unavailable</string>
+    <string name="network_error">Network error. Check your connection.</string>
+    <string name="unknown_location_name">Unknown location name</string>
 </resources>

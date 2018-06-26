@@ -40,6 +40,7 @@ dependencies {
     final verRxAndroid = '2.0.2'
     final verButterKnife = '8.8.1'
     final verAssertJ = '3.10.0'
+    final verPlayServices = '15.0.1'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -76,6 +77,11 @@ dependencies {
      */
     implementation "io.reactivex.rxjava2:rxjava:$verRxJava"
     implementation "io.reactivex.rxjava2:rxandroid:$verRxAndroid"
+
+    /**
+     * Location
+     */
+    implementation "com.google.android.gms:play-services-location:$verPlayServices"
 
     /**
      * Tests

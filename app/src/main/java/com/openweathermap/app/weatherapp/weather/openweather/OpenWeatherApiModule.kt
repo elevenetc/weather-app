@@ -1,5 +1,6 @@
 package com.openweathermap.app.weatherapp.weather.openweather
 
+import android.content.Context
 import com.openweathermap.app.weatherapp.BuildConfig
 import com.openweathermap.app.weatherapp.common.Names
 import com.openweathermap.app.weatherapp.weather.WeatherModel
@@ -51,5 +52,10 @@ class OpenWeatherApiModule {
                 .build()
 
         return retrofit.create<OpenWeatherApi>(OpenWeatherApi::class.java)
+    }
+
+    @Provides
+    fun mapper(appContext: Context): OpenWeatherMapper {
+        return OpenWeatherMapper(appContext)
     }
 }

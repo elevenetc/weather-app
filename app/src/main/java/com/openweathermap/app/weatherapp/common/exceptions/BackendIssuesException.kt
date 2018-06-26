@@ -1,3 +1,3 @@
-package com.openweathermap.app.weatherapp.exceptions
+package com.openweathermap.app.weatherapp.common.exceptions
 
 class BackendIssuesException(cause:Throwable):RuntimeException(cause)

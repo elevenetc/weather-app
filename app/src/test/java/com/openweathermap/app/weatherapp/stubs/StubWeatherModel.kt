@@ -20,7 +20,7 @@ class StubWeatherModel : WeatherModel {
         return weather
     }
 
-    override fun findByLocation(lat: Double, lon: Double): Single<Weather> {
+    override fun findWeatherAtCurrentLocation(lat: Double, lon: Double): Single<Weather> {
         return weather
     }
 

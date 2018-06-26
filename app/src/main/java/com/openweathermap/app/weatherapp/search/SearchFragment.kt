@@ -3,6 +3,7 @@ package com.openweathermap.app.weatherapp.search
 
 import android.content.Context
 import android.os.Bundle
+import android.support.annotation.StringRes
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,7 @@ import butterknife.OnClick
 import butterknife.Unbinder
 import com.openweathermap.app.weatherapp.R
 import com.openweathermap.app.weatherapp.common.BaseFragment
+import com.openweathermap.app.weatherapp.common.RequestCodes
 
 
 class SearchFragment : BaseFragment() {
@@ -39,6 +41,9 @@ class SearchFragment : BaseFragment() {
 
     @BindView(R.id.btn_search_zip)
     lateinit var btnSearchZip: Button
+
+    @BindView(R.id.btn_search_for_current_location)
+    lateinit var btnSearchCurrentLocation: Button
 
     @BindView(R.id.text_temp)
     lateinit var textTemp: TextView
@@ -94,21 +99,34 @@ class SearchFragment : BaseFragment() {
                 .subscribe { state -> handleState(state) })
     }
 
+    @OnClick(R.id.btn_search_for_current_location)
+    fun searchForCurrentLocation() {
+        appComponent.permissions().checkLocationPermission(this, {
+            getCurrentLocationAndFindWeather()
+        })
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        if (requestCode == RequestCodes.LOCATION_PERMISSION) getCurrentLocationAndFindWeather()
+    }
 
     private fun handleState(state: SearchState) {
         when {
             state.type == SearchState.Type.NOT_FOUND -> {
-                weatherContainer.visibility = View.GONE
-                textStatus.visibility = View.VISIBLE
-                btnSearchCity.isEnabled = true
-                btnSearchZip.isEnabled = true
-                textStatus.setText(R.string.not_found_weather)
+                setErrorState(R.string.not_found_weather)
+            }
+            state.type == SearchState.Type.NO_LOCATION_ERROR -> {
+                setErrorState(R.string.location_is_unavailable)
+            }
+            state.type == SearchState.Type.NETWORK_ERROR -> {
+                setErrorState(R.string.network_error)
             }
             state.type == SearchState.Type.PROGRESS -> {
                 weatherContainer.visibility = View.GONE
                 textStatus.visibility = View.VISIBLE
                 btnSearchCity.isEnabled = false
                 btnSearchZip.isEnabled = false
+                btnSearchCurrentLocation.isEnabled = false
                 textStatus.setText(R.string.looking_for_weather)
             }
             state.type == SearchState.Type.RESULT -> {
@@ -117,9 +135,26 @@ class SearchFragment : BaseFragment() {
                 textLocationName.text = state.weather.name
                 btnSearchCity.isEnabled = true
                 btnSearchZip.isEnabled = true
+                btnSearchCurrentLocation.isEnabled = true
                 textTemp.text = state.weather.temperature.toString()
             }
         }
+    }
+
+    private fun setErrorState(@StringRes message: Int) {
+        weatherContainer.visibility = View.GONE
+        textStatus.visibility = View.VISIBLE
+        btnSearchCity.isEnabled = true
+        btnSearchZip.isEnabled = true
+        btnSearchCurrentLocation.isEnabled = true
+        textStatus.setText(message)
+    }
+
+    private fun getCurrentLocationAndFindWeather() {
+        subs.add(viewModel.findWeatherAtCurrentLocation()
+                .subscribeOn(appComponent.schedulers().background())
+                .observeOn(appComponent.schedulers().ui())
+                .subscribe { state -> handleState(state) })
     }
 
     companion object {

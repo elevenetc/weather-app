@@ -1,4 +1,4 @@
-package com.openweathermap.app.weatherapp.logs
+package com.openweathermap.app.weatherapp.common.logs
 
 import javax.inject.Inject
 
