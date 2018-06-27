@@ -1,10 +1,20 @@
 package com.openweathermap.app.weatherapp.stubs
 
 import com.openweathermap.app.weatherapp.common.Weather
+import com.openweathermap.app.weatherapp.queries.SearchQuery
 import com.openweathermap.app.weatherapp.weather.WeatherModel
+import io.reactivex.Completable
 import io.reactivex.Single
 
 class StubWeatherModel : WeatherModel {
+
+    override fun getRecentQueries(): Single<List<SearchQuery>> {
+        return Single.error(NotImplementedError())
+    }
+
+    override fun deleteAllQueries(): Completable {
+        return Completable.error(NotImplementedError())
+    }
 
     private val weather: Single<Weather>
 
@@ -20,11 +30,11 @@ class StubWeatherModel : WeatherModel {
         return weather
     }
 
-    override fun findWeatherAtCurrentLocation(lat: Double, lon: Double): Single<Weather> {
+    override fun findWeatherAtCurrentLocation(): Single<Weather> {
         return weather
     }
 
-    override fun findByZip(code: String): Single<Weather> {
+    override fun findByZip(zip: String): Single<Weather> {
         return weather
     }
 }

@@ -7,10 +7,20 @@
     <string name="recent">Recent</string>
     <string name="edit_search_city_hint">City name</string>
     <string name="not_found_weather">Not found weather for the location</string>
-    <string name="looking_for_weather">Looking for weather</string>
+    <string name="looking_for_weather">Looking for weather…</string>
     <string name="edit_search_name_zip">Zip code</string>
     <string name="search_for_current_location">Search for current location</string>
     <string name="location_is_unavailable">Location is unavailable</string>
     <string name="network_error">Network error. Check your connection.</string>
     <string name="unknown_location_name">Unknown location name</string>
+    <string name="getting_recent_queries">Getting recent queries…</string>
+    <string name="no_recent_queries">No recent search queries.</string>
+    <string name="delete">Detele</string>
+    <string name="name">Name</string>
+    <string name="zip_code">Zip Code</string>
+    <string name="location">Location</string>
+    <string name="recent_queries">Recent queries</string>
+    <string name="delete_all_queries">Delete all queries</string>
+    <string name="deleting_queries">Deleting queries…</string>
+    <string name="all_queries_delete">All queries deleted.</string>
 </resources>

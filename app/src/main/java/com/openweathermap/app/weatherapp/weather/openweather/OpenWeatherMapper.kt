@@ -14,6 +14,6 @@ class OpenWeatherMapper @Inject constructor(private val appContext: Context) {
             name = appContext.getString(R.string.unknown_location_name)
 
 
-        return Weather(name, from.main.temp)
+        return Weather(name, from.main.temp, from.coord.lat, from.coord.lon)
     }
 }

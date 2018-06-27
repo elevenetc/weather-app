@@ -5,6 +5,7 @@ import com.openweathermap.app.weatherapp.common.exceptions.NetworkException
 import com.openweathermap.app.weatherapp.search.SearchState.Type
 import com.openweathermap.app.weatherapp.weather.WeatherModel
 import io.reactivex.Observable
+import io.reactivex.Observable.concat
 import io.reactivex.Observable.just
 import io.reactivex.Single
 import javax.inject.Inject
@@ -16,7 +17,7 @@ class SearchViewModel @Inject constructor(
     private var state: SearchState = SearchState(Type.IDLE)
 
     fun findWeatherAtCurrentLocation(): Observable<SearchState> {
-        return Observable.concat(
+        return concat(
                 just(SearchState(Type.PROGRESS)),
                 model.findWeatherAtCurrentLocation()
                         .map({ result -> SearchState(Type.RESULT, result) }).toObservable()
@@ -28,7 +29,7 @@ class SearchViewModel @Inject constructor(
 
     fun findWeatherByCity(name: String): Observable<SearchState> {
 
-        return Observable.concat(
+        return concat(
                 just(SearchState(Type.PROGRESS)),
                 model.findByName(name)
                         .map({ result -> SearchState(Type.RESULT, result) }).toObservable()
@@ -40,7 +41,7 @@ class SearchViewModel @Inject constructor(
 
     fun findWeatherByZip(zip: String): Observable<SearchState> {
 
-        return Observable.concat(
+        return concat(
                 just(SearchState(Type.PROGRESS)),
                 model.findByZip(zip)
                         .map({ result -> SearchState(Type.RESULT, result) }).toObservable()

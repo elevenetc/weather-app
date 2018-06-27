@@ -1,17 +1,13 @@
 package com.openweathermap.app.weatherapp
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import com.openweathermap.app.weatherapp.search.SearchFragment
+import com.openweathermap.app.weatherapp.common.BaseActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction().add(R.id.main_content_group, SearchFragment.newInstance()).commit()
-        }
+        appComponent.navigator().onMainActivityCreated(this, savedInstanceState)
     }
 }

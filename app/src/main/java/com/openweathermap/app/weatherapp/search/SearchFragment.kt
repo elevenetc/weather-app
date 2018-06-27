@@ -67,9 +67,9 @@ class SearchFragment : BaseFragment() {
         viewModel.latestState()
                 .subscribeOn(appComponent.schedulers().background())
                 .observeOn(appComponent.schedulers().ui())
-                .subscribe({ state ->
+                .subscribe { state ->
                     handleState(state)
-                })
+                }
     }
 
     override fun onDestroyView() {
@@ -101,9 +101,14 @@ class SearchFragment : BaseFragment() {
 
     @OnClick(R.id.btn_search_for_current_location)
     fun searchForCurrentLocation() {
-        appComponent.permissions().checkLocationPermission(this, {
+        appComponent.permissions().checkLocationPermission(this) {
             getCurrentLocationAndFindWeather()
-        })
+        }
+    }
+
+    @OnClick(R.id.btn_recent_queries)
+    fun recentQueriesHandler() {
+        appComponent.navigator().goToRecentQueries(activity!!)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

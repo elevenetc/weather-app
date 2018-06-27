@@ -1,4 +1,4 @@
-package com.openweathermap.app.weatherapp.location
+package com.openweathermap.app.weatherapp.common.location
 
 import android.content.Context
 import android.location.Location

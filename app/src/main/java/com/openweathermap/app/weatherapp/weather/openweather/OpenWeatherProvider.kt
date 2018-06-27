@@ -36,13 +36,13 @@ class OpenWeatherProvider @Inject constructor(private val api: OpenWeatherApi,
     }
 
     private fun handleError(): SingleTransformer<Weather, Weather> {
-        return SingleTransformer({ upstream ->
+        return SingleTransformer { upstream ->
             upstream.onErrorResumeNext { it ->
                 mapError(it)
             }.doOnError {
                 logger.log(it)
             }
-        })
+        }
     }
 
 }
