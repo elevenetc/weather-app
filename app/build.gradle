@@ -41,6 +41,7 @@ dependencies {
     final verButterKnife = '8.8.1'
     final verAssertJ = '3.10.0'
     final verPlayServices = '15.0.1'
+    final verRoom = '1.1.1'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -82,6 +83,13 @@ dependencies {
      * Location
      */
     implementation "com.google.android.gms:play-services-location:$verPlayServices"
+
+    /**
+     * DatabaseImpl
+     */
+    implementation "android.arch.persistence.room:runtime:$verRoom"
+    implementation "android.arch.persistence.room:rxjava2:$verRoom"
+    kapt "android.arch.persistence.room:compiler:$verRoom"
 
     /**
      * Tests
