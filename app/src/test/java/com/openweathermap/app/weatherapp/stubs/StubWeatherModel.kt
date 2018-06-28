@@ -8,6 +8,8 @@ import io.reactivex.Single
 
 class StubWeatherModel : WeatherModel {
 
+    private val weather: Single<Weather>
+
     override fun getRecentQueries(): Single<List<SearchQuery>> {
         return Single.error(NotImplementedError())
     }
@@ -16,7 +18,10 @@ class StubWeatherModel : WeatherModel {
         return Completable.error(NotImplementedError())
     }
 
-    private val weather: Single<Weather>
+
+    override fun deleteQuery(searchQuery: SearchQuery): Completable {
+        return Completable.error(NotImplementedError())
+    }
 
     constructor(weather: Weather) {
         this.weather = Single.just(weather)

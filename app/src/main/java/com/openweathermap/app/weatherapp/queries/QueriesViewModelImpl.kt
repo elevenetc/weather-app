@@ -24,7 +24,15 @@ class QueriesViewModelImpl @Inject constructor(private val model: WeatherModel) 
     override fun deleteAllQueries(): Observable<QueriesState> {
         return concat(
                 just(QueriesState(DELETING_QUERIES)),
-                model.deleteAllQueries().toSingle { ALL_DELETED }.toObservable()
+                model.deleteAllQueries().toSingle { QueriesState(ALL_DELETED) }.toObservable()
+        )
+    }
+
+    override fun deleteQuery(query: SearchQuery): Observable<QueriesState> {
+        //TODO: Should be updated with extra states for blocking/removing only one item, but not all items
+        return concat(
+                just(QueriesState(DELETING_QUERIES)),
+                model.deleteQuery(query).andThen(getQueries())
         )
     }
 }

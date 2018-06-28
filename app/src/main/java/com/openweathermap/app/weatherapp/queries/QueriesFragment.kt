@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import butterknife.BindView
 import butterknife.ButterKnife
@@ -22,6 +23,9 @@ class QueriesFragment : BaseFragment() {
 
     @BindView(R.id.text_status)
     lateinit var textStatus: TextView
+
+    @BindView(R.id.btn_delete_all)
+    lateinit var btnDeleteAll: Button
 
     private lateinit var binder: Unbinder
     private val viewModel: QueriesViewModel by lazy { appComponent.queriesComponent().viewModel() }
@@ -62,31 +66,43 @@ class QueriesFragment : BaseFragment() {
                 state.type == QueriesState.Type.PROGRESS -> {
                     listQueries.visibility = View.INVISIBLE
                     textStatus.visibility = View.VISIBLE
+                    btnDeleteAll.isEnabled = false
                     textStatus.setText(R.string.getting_recent_queries)
                 }
                 state.type == QueriesState.Type.EMPTY -> {
                     listQueries.visibility = View.INVISIBLE
                     textStatus.visibility = View.VISIBLE
+                    btnDeleteAll.isEnabled = false
                     textStatus.setText(R.string.no_recent_queries)
                 }
                 state.type == QueriesState.Type.RESULT -> {
                     listQueries.visibility = View.VISIBLE
                     textStatus.visibility = View.INVISIBLE
+                    btnDeleteAll.isEnabled = true
                     textStatus.setText(R.string.no_recent_queries)
-                    listQueries.adapter = QueriesAdapter(state.queries, context!!)
+                    listQueries.adapter = QueriesAdapter(state.queries, context!!) { deleteItem(it) }
                 }
                 state.type == QueriesState.Type.DELETING_QUERIES -> {
                     listQueries.visibility = View.INVISIBLE
                     textStatus.visibility = View.VISIBLE
+                    btnDeleteAll.isEnabled = false
                     textStatus.setText(R.string.deleting_queries)
                 }
                 state.type == QueriesState.Type.ALL_DELETED -> {
                     listQueries.visibility = View.INVISIBLE
                     textStatus.visibility = View.VISIBLE
+                    btnDeleteAll.isEnabled = false
                     textStatus.setText(R.string.all_queries_delete)
                 }
             }
         }
+    }
+
+    private fun deleteItem(query: SearchQuery) {
+        subs.add(viewModel.deleteQuery(query)
+                .subscribeOn(appComponent.schedulers().background())
+                .observeOn(appComponent.schedulers().ui())
+                .subscribe(handleState()))
     }
 
 

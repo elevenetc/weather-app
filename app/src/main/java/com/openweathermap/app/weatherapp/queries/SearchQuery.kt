@@ -26,6 +26,9 @@ class SearchQuery {
     @ColumnInfo(name = "createdAt")
     var createdAt: Date = Date()
 
+    /**
+     * By far not the best solution. But it could be discussed.
+     */
     fun hasLocation(): Boolean {
         return lat.toInt() != DEFAULT_LOC.toInt() && lon.toInt() != DEFAULT_LOC.toInt()
     }

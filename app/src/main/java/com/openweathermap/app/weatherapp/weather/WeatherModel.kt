@@ -11,4 +11,5 @@ interface WeatherModel {
     fun findWeatherAtCurrentLocation(): Single<Weather>
     fun getRecentQueries(): Single<List<SearchQuery>>
     fun deleteAllQueries(): Completable
+    fun deleteQuery(searchQuery: SearchQuery): Completable
 }

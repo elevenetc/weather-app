@@ -40,6 +40,12 @@ class WeatherModelImpl @Inject constructor(
         }
     }
 
+    override fun deleteQuery(searchQuery: SearchQuery): Completable {
+        return Completable.fromCallable {
+            database.searchQueries().delete(searchQuery)
+        }
+    }
+
     override fun getRecentQueries(): Single<List<SearchQuery>> {
         return database.searchQueries().all
     }
