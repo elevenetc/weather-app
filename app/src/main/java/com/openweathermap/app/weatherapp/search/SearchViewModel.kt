@@ -53,6 +53,16 @@ class SearchViewModel @Inject constructor(
         )
     }
 
+    fun findWeatherByQueryId(id: Int): Observable<SearchState> {
+
+        return concat(
+                just(SearchState(Type.PROGRESS)),
+                model.findByQueryId(id)
+                        .map { result -> SearchState(Type.RESULT, result) }.toObservable()
+                        .onErrorReturn { mapError(it) }
+        )
+    }
+
     private fun mapError(t: Throwable): SearchState {
         return when (t) {
             is NetworkException -> SearchState(Type.NETWORK_ERROR)

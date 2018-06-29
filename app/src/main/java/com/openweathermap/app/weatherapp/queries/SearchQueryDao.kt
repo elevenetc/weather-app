@@ -16,6 +16,9 @@ interface SearchQueryDao {
     @Query("SELECT * FROM `search-query` ORDER BY createdAt DESC LIMIT 1")
     fun getLatest(): Single<SearchQuery>
 
+    @Query("SELECT * FROM `search-query` WHERE id=:id")
+    fun getById(id: Int): Single<SearchQuery>
+
     @Insert
     fun insert(vararg queries: SearchQuery)
 

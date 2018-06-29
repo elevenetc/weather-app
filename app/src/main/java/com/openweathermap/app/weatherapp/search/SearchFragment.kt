@@ -63,7 +63,14 @@ class SearchFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        subs.add(viewModel.findWeatherByRecentSearch()
+
+        val let = if (arguments != null && arguments!!.getInt(QUERY_ID) != EMPTY_QUERY_ID) {
+            viewModel.findWeatherByQueryId(arguments!!.getInt(QUERY_ID))
+        } else {
+            viewModel.findWeatherByRecentSearch()
+        }
+
+        subs.add(let
                 .subscribeOn(appComponent.schedulers().background())
                 .observeOn(appComponent.schedulers().ui())
                 .subscribe { state -> handleState(state) })
@@ -168,6 +175,14 @@ class SearchFragment : BaseFragment() {
     }
 
     companion object {
-        fun newInstance() = SearchFragment()
+
+        private const val QUERY_ID = "queryId"
+        private const val EMPTY_QUERY_ID = -1
+
+        fun newInstance(queryId: Int = EMPTY_QUERY_ID) = SearchFragment().apply {
+            arguments = Bundle().apply {
+                putInt(QUERY_ID, queryId)
+            }
+        }
     }
 }

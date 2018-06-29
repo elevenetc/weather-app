@@ -79,7 +79,7 @@ class QueriesFragment : BaseFragment() {
                     textStatus.visibility = View.INVISIBLE
                     btnDeleteAll.isEnabled = true
                     textStatus.setText(R.string.no_recent_queries)
-                    listQueries.adapter = QueriesAdapter(state.queries, context!!) { deleteItem(it) }
+                    listQueries.adapter = QueriesAdapter(state.queries, context!!, { deleteItem(it) }, { searchFor(it) })
                 }
                 state.type == QueriesState.Type.DELETING_QUERIES -> {
                     listQueries.visibility = View.INVISIBLE
@@ -104,6 +104,9 @@ class QueriesFragment : BaseFragment() {
                 .subscribe(handleState()))
     }
 
+    private fun searchFor(query: SearchQuery) {
+        appComponent.navigator().goToSearch(activity!!, queryId = query.id)
+    }
 
     companion object {
         fun newInstance() = QueriesFragment()

@@ -6,12 +6,23 @@ import io.reactivex.Completable
 import io.reactivex.Single
 
 interface WeatherModel {
+    /**
+     * Search queries
+     */
+    fun getRecentQueries(): Single<List<SearchQuery>>
+
+    fun getRecentQuery(): Single<SearchQuery>
+    fun deleteQuery(searchQuery: SearchQuery): Completable
+    fun deleteAllQueries(): Completable
+
+    /**
+     * Weather
+     */
+    fun findByQueryId(queryId: Int): Single<Weather>
     fun findByQuery(query: SearchQuery): Single<Weather>
     fun findByName(name: String): Single<Weather>
     fun findByZip(zip: String): Single<Weather>
     fun findWeatherAtCurrentLocation(): Single<Weather>
-    fun getRecentQueries(): Single<List<SearchQuery>>
-    fun getRecentQuery(): Single<SearchQuery>
-    fun deleteAllQueries(): Completable
-    fun deleteQuery(searchQuery: SearchQuery): Completable
+
+
 }

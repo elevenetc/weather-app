@@ -8,6 +8,7 @@ import io.reactivex.Observable.just
 import javax.inject.Inject
 
 class QueriesViewModelImpl @Inject constructor(private val model: WeatherModel) : QueriesViewModel {
+
     override fun getQueries(): Observable<QueriesState> {
         return concat(
                 just(QueriesState(PROGRESS)),

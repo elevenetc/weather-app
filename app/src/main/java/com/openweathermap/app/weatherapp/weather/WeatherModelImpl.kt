@@ -18,6 +18,12 @@ class WeatherModelImpl @Inject constructor(
         return weatherProvider.findByQuery(query)
     }
 
+    override fun findByQueryId(queryId: Int): Single<Weather> {
+        return database.searchQueries().getById(queryId).flatMap {
+            findByQuery(it)
+        }
+    }
+
     override fun findByName(name: String): Single<Weather> {
         return weatherProvider.findByName(name).doOnSuccess {
             database.searchQueries().insert(SearchQuery.create(name))

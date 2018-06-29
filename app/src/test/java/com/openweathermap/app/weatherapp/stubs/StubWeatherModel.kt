@@ -4,10 +4,12 @@ import com.openweathermap.app.weatherapp.common.Weather
 import com.openweathermap.app.weatherapp.queries.SearchQuery
 import com.openweathermap.app.weatherapp.weather.WeatherModel
 import io.reactivex.Completable
-import io.reactivex.Maybe
 import io.reactivex.Single
 
 class StubWeatherModel : WeatherModel {
+    override fun findByQuery(query: SearchQuery): Single<Weather> {
+        return Single.error(NotImplementedError())
+    }
 
     private val weather: Single<Weather>
 
@@ -40,8 +42,12 @@ class StubWeatherModel : WeatherModel {
         return weather
     }
 
-    override fun getRecentQuery(): Maybe<SearchQuery> {
-        return Maybe.error(NotImplementedError())
+    override fun findByQueryId(queryId: Int): Single<Weather> {
+        return Single.error(NotImplementedError())
+    }
+
+    override fun getRecentQuery(): Single<SearchQuery> {
+        return Single.error(NotImplementedError())
     }
 
     override fun findByZip(zip: String): Single<Weather> {

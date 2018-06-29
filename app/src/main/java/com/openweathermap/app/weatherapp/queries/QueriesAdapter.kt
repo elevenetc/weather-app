@@ -15,13 +15,15 @@ import com.openweathermap.app.weatherapp.R
 class QueriesAdapter(
         private val queries: List<SearchQuery>,
         private val context: Context,
-        private val deleteItemHandler: (SearchQuery) -> Unit) : RecyclerView.Adapter<VH>() {
+        private val deleteItemHandler: (SearchQuery) -> Unit,
+        private val itemClickHandler: (SearchQuery) -> Unit) : RecyclerView.Adapter<VH>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, type: Int): VH {
         return VH(
                 context,
                 LayoutInflater.from(viewGroup.context).inflate(R.layout.view_search_query, viewGroup, false),
-                deleteItemHandler
+                deleteItemHandler,
+                itemClickHandler
         )
     }
 
@@ -38,7 +40,8 @@ class QueriesAdapter(
 class VH(
         val context: Context,
         view: View,
-        private val deleteItemHandler: (SearchQuery) -> Unit) : RecyclerView.ViewHolder(view) {
+        private val deleteItemHandler: (SearchQuery) -> Unit,
+        private val itemClickHandler: (SearchQuery) -> Unit) : RecyclerView.ViewHolder(view) {
 
     @BindView(R.id.text_date)
     lateinit var textDate: TextView
@@ -70,6 +73,7 @@ class VH(
                     ""
                 }
         )
+        itemView.setOnClickListener { itemClickHandler(query) }
     }
 
     @OnClick(R.id.btn_delete)
