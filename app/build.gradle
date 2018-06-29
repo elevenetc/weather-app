@@ -5,11 +5,17 @@ apply plugin: 'kotlin-kapt'
 
 android {
 
+    final fieldAppName = 'app_name'
+    final flavourDimenCountry = 'country'
+
+    compileSdkVersion 28
+    flavorDimensions flavourDimenCountry
+
     Properties properties = new Properties()
     properties.load(project.rootProject.file('api.keys.properties').newDataInputStream())
     final openWeatherAppId = properties.getProperty('open.weather.app.id')
 
-    compileSdkVersion 28
+
     defaultConfig {
         applicationId "com.openweathermap.app.weatherapp"
         minSdkVersion 14
@@ -26,6 +32,20 @@ android {
         }
         debug {
             buildConfigField 'String', 'OPEN_WEATHER_API_KEY', "\"$openWeatherAppId\""
+        }
+    }
+    productFlavors {
+        australia {
+            dimension flavourDimenCountry
+
+            applicationIdSuffix ".au"
+            resValue("string", fieldAppName, "My Aussie Weather")
+        }
+        canada {
+            dimension flavourDimenCountry
+
+            applicationIdSuffix ".ca"
+            resValue("string", fieldAppName, "My Eh Weather")
         }
     }
 }
@@ -47,11 +67,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "com.android.support:appcompat-v7:$verSupportLib"
     implementation "com.android.support:support-v4:$verSupportLib"
-    implementation "com.android.support:design:$verSupportLib"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+
 
     /**
      * Architecture
@@ -64,6 +80,12 @@ dependencies {
      */
     implementation "com.jakewharton:butterknife:$verButterKnife"
     kapt "com.jakewharton:butterknife-compiler:$verButterKnife"
+
+    /**
+     * UI Components
+     */
+    implementation "com.android.support:design:$verSupportLib"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 
     /**
      * Network
@@ -95,4 +117,7 @@ dependencies {
      * Tests
      */
     testImplementation "org.assertj:assertj-core:$verAssertJ"
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
