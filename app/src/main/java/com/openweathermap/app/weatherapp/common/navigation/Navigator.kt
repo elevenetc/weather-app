@@ -1,10 +1,10 @@
 package com.openweathermap.app.weatherapp.common.navigation
 
 import android.os.Bundle
-import android.support.v4.app.FragmentActivity
+import com.openweathermap.app.weatherapp.common.MainActivity
 
 interface Navigator {
-    fun goToRecentQueries(mainActivity: FragmentActivity)
-    fun goToSearch(mainActivity: FragmentActivity, queryId: Int = -1)
-    fun onMainActivityCreated(mainActivity: FragmentActivity, savedInstanceState: Bundle?)
+    fun goToRecentQueries(mainActivity: MainActivity)
+    fun goToSearch(mainActivity: MainActivity, queryId: Int = -1)
+    fun onMainActivityCreated(mainActivity: MainActivity, savedInstanceState: Bundle?)
 }

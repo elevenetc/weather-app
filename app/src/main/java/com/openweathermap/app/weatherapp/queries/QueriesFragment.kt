@@ -14,6 +14,7 @@ import butterknife.OnClick
 import butterknife.Unbinder
 import com.openweathermap.app.weatherapp.R
 import com.openweathermap.app.weatherapp.common.BaseFragment
+import com.openweathermap.app.weatherapp.common.MainActivity
 
 class QueriesFragment : BaseFragment() {
 
@@ -105,7 +106,7 @@ class QueriesFragment : BaseFragment() {
     }
 
     private fun searchFor(query: SearchQuery) {
-        appComponent.navigator().goToSearch(activity!!, queryId = query.id)
+        appComponent.navigator().goToSearch(activity as MainActivity, queryId = query.id)
     }
 
     companion object {

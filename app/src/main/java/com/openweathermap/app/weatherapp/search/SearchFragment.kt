@@ -15,7 +15,7 @@ import butterknife.OnClick
 import butterknife.Unbinder
 import com.openweathermap.app.weatherapp.R
 import com.openweathermap.app.weatherapp.common.BaseFragment
-import com.openweathermap.app.weatherapp.common.RequestCodes
+import com.openweathermap.app.weatherapp.common.MainActivity
 
 
 class SearchFragment : BaseFragment() {
@@ -63,17 +63,7 @@ class SearchFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val let = if (arguments != null && arguments!!.getInt(QUERY_ID) != EMPTY_QUERY_ID) {
-            viewModel.findWeatherByQueryId(arguments!!.getInt(QUERY_ID))
-        } else {
-            viewModel.findWeatherByRecentSearch()
-        }
-
-        subs.add(let
-                .subscribeOn(appComponent.schedulers().background())
-                .observeOn(appComponent.schedulers().ui())
-                .subscribe { state -> handleState(state) })
+        findWeatherByArgumentOrRecent()
     }
 
     override fun onDestroyView() {
@@ -112,11 +102,12 @@ class SearchFragment : BaseFragment() {
 
     @OnClick(R.id.btn_recent_queries)
     fun recentQueriesHandler() {
-        appComponent.navigator().goToRecentQueries(activity!!)
+        appComponent.navigator().goToRecentQueries(activity as MainActivity)
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        if (requestCode == RequestCodes.LOCATION_PERMISSION) getCurrentLocationAndFindWeather()
+        if (appComponent.permissions().isLocationGranted(requestCode, permissions, grantResults))
+            getCurrentLocationAndFindWeather()
     }
 
     private fun handleState(state: SearchState) {
@@ -169,6 +160,19 @@ class SearchFragment : BaseFragment() {
 
     private fun getCurrentLocationAndFindWeather() {
         subs.add(viewModel.findWeatherAtCurrentLocation()
+                .subscribeOn(appComponent.schedulers().background())
+                .observeOn(appComponent.schedulers().ui())
+                .subscribe { state -> handleState(state) })
+    }
+
+    private fun findWeatherByArgumentOrRecent() {
+        val weather = if (arguments != null && arguments!!.getInt(QUERY_ID) != EMPTY_QUERY_ID) {
+            viewModel.findWeatherByQueryId(arguments!!.getInt(QUERY_ID))
+        } else {
+            viewModel.findWeatherByRecentSearch()
+        }
+
+        subs.add(weather
                 .subscribeOn(appComponent.schedulers().background())
                 .observeOn(appComponent.schedulers().ui())
                 .subscribe { state -> handleState(state) })

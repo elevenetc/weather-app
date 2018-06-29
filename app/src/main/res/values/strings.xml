@@ -1,7 +1,6 @@
 <resources>
-    <string name="app_name">weatherapp</string>
+    <string name="app_name">Weather</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="search">Search</string>
     <string name="recent">Recent</string>
@@ -15,7 +14,7 @@
     <string name="unknown_location_name">Unknown location name</string>
     <string name="getting_recent_queries">Getting recent queries…</string>
     <string name="no_recent_queries">No recent search queries.</string>
-    <string name="delete">Detele</string>
+    <string name="delete">Delete</string>
     <string name="name">Name</string>
     <string name="zip_code">Zip Code</string>
     <string name="location">Location</string>
