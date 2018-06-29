@@ -1,7 +1,6 @@
 package com.openweathermap.app.weatherapp.search
 
 
-import android.content.Context
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.view.LayoutInflater
@@ -62,14 +61,12 @@ class SearchFragment : BaseFragment() {
         return result
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        viewModel.latestState()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        subs.add(viewModel.findWeatherByRecentSearch()
                 .subscribeOn(appComponent.schedulers().background())
                 .observeOn(appComponent.schedulers().ui())
-                .subscribe { state ->
-                    handleState(state)
-                }
+                .subscribe { state -> handleState(state) })
     }
 
     override fun onDestroyView() {
@@ -117,14 +114,13 @@ class SearchFragment : BaseFragment() {
 
     private fun handleState(state: SearchState) {
         when {
-            state.type == SearchState.Type.NOT_FOUND -> {
-                setErrorState(R.string.not_found_weather)
-            }
-            state.type == SearchState.Type.NO_LOCATION_ERROR -> {
-                setErrorState(R.string.location_is_unavailable)
-            }
-            state.type == SearchState.Type.NETWORK_ERROR -> {
-                setErrorState(R.string.network_error)
+            state.type == SearchState.Type.IDLE -> {
+                weatherContainer.visibility = View.GONE
+                textStatus.visibility = View.GONE
+                btnSearchCity.isEnabled = true
+                btnSearchZip.isEnabled = true
+                btnSearchCurrentLocation.isEnabled = true
+                textStatus.text = ""
             }
             state.type == SearchState.Type.PROGRESS -> {
                 weatherContainer.visibility = View.GONE
@@ -142,6 +138,15 @@ class SearchFragment : BaseFragment() {
                 btnSearchZip.isEnabled = true
                 btnSearchCurrentLocation.isEnabled = true
                 textTemp.text = state.weather.temperature.toString()
+            }
+            state.type == SearchState.Type.NOT_FOUND -> {
+                setErrorState(R.string.not_found_weather)
+            }
+            state.type == SearchState.Type.NO_LOCATION_ERROR -> {
+                setErrorState(R.string.location_is_unavailable)
+            }
+            state.type == SearchState.Type.NETWORK_ERROR -> {
+                setErrorState(R.string.network_error)
             }
         }
     }

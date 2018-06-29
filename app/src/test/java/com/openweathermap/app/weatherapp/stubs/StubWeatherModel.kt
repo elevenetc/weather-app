@@ -4,6 +4,7 @@ import com.openweathermap.app.weatherapp.common.Weather
 import com.openweathermap.app.weatherapp.queries.SearchQuery
 import com.openweathermap.app.weatherapp.weather.WeatherModel
 import io.reactivex.Completable
+import io.reactivex.Maybe
 import io.reactivex.Single
 
 class StubWeatherModel : WeatherModel {
@@ -37,6 +38,10 @@ class StubWeatherModel : WeatherModel {
 
     override fun findWeatherAtCurrentLocation(): Single<Weather> {
         return weather
+    }
+
+    override fun getRecentQuery(): Maybe<SearchQuery> {
+        return Maybe.error(NotImplementedError())
     }
 
     override fun findByZip(zip: String): Single<Weather> {

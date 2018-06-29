@@ -13,6 +13,9 @@ interface SearchQueryDao {
     @get:Query("SELECT * FROM `search-query`")
     val all: Single<List<SearchQuery>>
 
+    @Query("SELECT * FROM `search-query` ORDER BY createdAt DESC LIMIT 1")
+    fun getLatest(): Single<SearchQuery>
+
     @Insert
     fun insert(vararg queries: SearchQuery)
 

@@ -14,10 +14,18 @@ class WeatherModelImpl @Inject constructor(
         private val database: Database
 ) : WeatherModel {
 
+    override fun findByQuery(query: SearchQuery): Single<Weather> {
+        return weatherProvider.findByQuery(query)
+    }
+
     override fun findByName(name: String): Single<Weather> {
         return weatherProvider.findByName(name).doOnSuccess {
             database.searchQueries().insert(SearchQuery.create(name))
         }
+    }
+
+    override fun getRecentQuery(): Single<SearchQuery> {
+        return database.searchQueries().getLatest()
     }
 
     override fun findByZip(zip: String): Single<Weather> {

@@ -1,6 +1,5 @@
 package com.openweathermap.app.weatherapp.queries
 
-import android.content.Context
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -37,18 +36,18 @@ class QueriesFragment : BaseFragment() {
         return result
     }
 
-    override fun onDestroyView() {
-        binder.unbind()
-        super.onDestroyView()
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         subs.add(viewModel.getQueries()
                 .subscribeOn(appComponent.schedulers().background())
                 .observeOn(appComponent.schedulers().ui())
                 .subscribe(handleState())
         )
+    }
+
+    override fun onDestroyView() {
+        binder.unbind()
+        super.onDestroyView()
     }
 
     @OnClick(R.id.btn_delete_all)

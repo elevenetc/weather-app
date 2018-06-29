@@ -12,5 +12,13 @@ interface OpenWeatherApi {
     fun searchZipCode(@Query("zip") zip: String): Single<ApiWeather>
 
     @GET("weather")
-    fun searchByLocation(@Query("lat") zip: Double, @Query("lon") lon: Double, @Query("cnt") count: Int = 1): Single<ApiWeather>
+    fun searchByLocation(@Query("lat") lat: Double, @Query("lon") lon: Double, @Query("cnt") count: Int = 1): Single<ApiWeather>
+
+    @GET("weather")
+    fun search(
+            @Query("q") city: String,
+            @Query("zip") zip: String,
+            @Query("lat") lat: Double,
+            @Query("lon") lon: Double,
+            @Query("cnt") count: Int = 1): Single<ApiWeather>
 }

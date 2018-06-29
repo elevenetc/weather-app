@@ -7,24 +7,30 @@ import com.openweathermap.app.weatherapp.weather.WeatherModel
 import io.reactivex.Observable
 import io.reactivex.Observable.concat
 import io.reactivex.Observable.just
-import io.reactivex.Single
 import javax.inject.Inject
+
 
 class SearchViewModel @Inject constructor(
         private val model: WeatherModel
 ) {
 
-    private var state: SearchState = SearchState(Type.IDLE)
+    fun findWeatherByRecentSearch(): Observable<SearchState> {
+        return concat(
+                just(SearchState(Type.PROGRESS)),
+                model.getRecentQuery().flatMap {
+                    model.findByQuery(it)
+                }.map { weather -> SearchState(Type.RESULT, weather) }.toObservable()
+                        .onErrorReturn { SearchState(Type.IDLE) }
+        )
+    }
 
     fun findWeatherAtCurrentLocation(): Observable<SearchState> {
         return concat(
                 just(SearchState(Type.PROGRESS)),
                 model.findWeatherAtCurrentLocation()
-                        .map({ result -> SearchState(Type.RESULT, result) }).toObservable()
-                        .onErrorReturn({ mapError(it) })
-        ).doOnNext({ state ->
-            this.state = state
-        })
+                        .map { result -> SearchState(Type.RESULT, result) }.toObservable()
+                        .onErrorReturn { mapError(it) }
+        )
     }
 
     fun findWeatherByCity(name: String): Observable<SearchState> {
@@ -32,11 +38,9 @@ class SearchViewModel @Inject constructor(
         return concat(
                 just(SearchState(Type.PROGRESS)),
                 model.findByName(name)
-                        .map({ result -> SearchState(Type.RESULT, result) }).toObservable()
-                        .onErrorReturn({ mapError(it) })
-        ).doOnNext({ state ->
-            this.state = state
-        })
+                        .map { result -> SearchState(Type.RESULT, result) }.toObservable()
+                        .onErrorReturn { mapError(it) }
+        )
     }
 
     fun findWeatherByZip(zip: String): Observable<SearchState> {
@@ -44,17 +48,10 @@ class SearchViewModel @Inject constructor(
         return concat(
                 just(SearchState(Type.PROGRESS)),
                 model.findByZip(zip)
-                        .map({ result -> SearchState(Type.RESULT, result) }).toObservable()
-                        .onErrorReturn({ mapError(it) })
-        ).doOnNext({ state ->
-            this.state = state
-        })
+                        .map { result -> SearchState(Type.RESULT, result) }.toObservable()
+                        .onErrorReturn { mapError(it) }
+        )
     }
-
-    fun latestState(): Single<SearchState> {
-        return Single.just(state)
-    }
-
 
     private fun mapError(t: Throwable): SearchState {
         return when (t) {
@@ -63,6 +60,5 @@ class SearchViewModel @Inject constructor(
             else -> SearchState(Type.NOT_FOUND)
         }
     }
-
 
 }

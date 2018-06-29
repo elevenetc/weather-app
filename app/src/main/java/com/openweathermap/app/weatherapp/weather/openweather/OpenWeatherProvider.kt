@@ -6,10 +6,12 @@ import com.openweathermap.app.weatherapp.common.exceptions.NetworkException
 import com.openweathermap.app.weatherapp.common.exceptions.NotFoundWeather
 import com.openweathermap.app.weatherapp.common.exceptions.SearchWeatherException
 import com.openweathermap.app.weatherapp.common.logs.Logger
+import com.openweathermap.app.weatherapp.queries.SearchQuery
 import com.openweathermap.app.weatherapp.weather.WeatherProvider
 import io.reactivex.Single
 import io.reactivex.SingleTransformer
 import retrofit2.HttpException
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -20,7 +22,7 @@ class OpenWeatherProvider @Inject constructor(private val api: OpenWeatherApi,
     override fun findByName(name: String): Single<Weather> {
         return api.searchCity(name).map {
             mapper.toWeather(it)
-        }.compose(handleError())
+        }.compose(handleError()).delay(10, TimeUnit.SECONDS)
     }
 
     override fun findByLocation(lat: Double, lon: Double): Single<Weather> {
@@ -31,6 +33,12 @@ class OpenWeatherProvider @Inject constructor(private val api: OpenWeatherApi,
 
     override fun findByZip(code: String): Single<Weather> {
         return api.searchZipCode(code).map {
+            mapper.toWeather(it)
+        }.compose(handleError())
+    }
+
+    override fun findByQuery(query: SearchQuery): Single<Weather> {
+        return api.search(query.name, query.zipCode, query.lat, query.lon).map {
             mapper.toWeather(it)
         }.compose(handleError())
     }
