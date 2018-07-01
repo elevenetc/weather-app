@@ -3,7 +3,6 @@
 Create file `./api.keys.properties` with [openweathermap](https://openweathermap.org/appid) app id:
 ```
 open.weather.app.id=APPID
-
 ```
 ## Test
 ```
@@ -12,7 +11,6 @@ open.weather.app.id=APPID
 ## Build
 ```
 ./gradlew assembleDebug
-
 ```
 ## Architecture
 - [DI graph](docs/arch/di.md)
