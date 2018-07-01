@@ -5,6 +5,10 @@ Create file `./api.keys.properties` with [openweathermap](https://openweathermap
 open.weather.app.id=APPID
 
 ```
+## Test
+```
+./gradlew test
+```
 ## Build
 ```
 ./gradlew assembleDebug
