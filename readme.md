@@ -1,4 +1,4 @@
-#Weather App
+# Weather App
 ## Setup
 Create file `./api.keys.properties` with [openweathermap](https://openweathermap.org/appid) app id:
 ```
