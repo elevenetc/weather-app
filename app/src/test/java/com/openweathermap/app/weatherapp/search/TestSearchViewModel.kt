@@ -46,7 +46,7 @@ class TestSearchViewModel {
     @Test
     fun unavailableLocation() {
         val model = StubWeatherModel.Builder().errorValues(LocationNotAvailable()).build()
-        val weatherModel = SearchViewModel(model)
+        val weatherModel = SearchViewModelImpl(model)
         val query = weatherModel.findWeatherAtCurrentLocation()
 
         assertObservableSequence(
@@ -58,10 +58,10 @@ class TestSearchViewModel {
 
     private fun getWeatherQueries(weatherModel: StubWeatherModel): List<Observable<SearchState>> {
         return listOf(
-                SearchViewModel(weatherModel).findWeatherByQueryId(query.id),
-                SearchViewModel(weatherModel).findWeatherByCity(weather.name),
-                SearchViewModel(weatherModel).findWeatherByZip(query.zipCode),
-                SearchViewModel(weatherModel).findWeatherByQueryId(query.id)
+                SearchViewModelImpl(weatherModel).findWeatherByQueryId(query.id),
+                SearchViewModelImpl(weatherModel).findWeatherByCity(weather.name),
+                SearchViewModelImpl(weatherModel).findWeatherByZip(query.zipCode),
+                SearchViewModelImpl(weatherModel).findWeatherByQueryId(query.id)
         )
     }
 

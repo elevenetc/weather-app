@@ -5,6 +5,6 @@ import dagger.Provides
 
 @Module
 class SearchModule {
-//    @Provides
-//    fun viewModel(inst: SearchViewModel): SearchViewModel = inst
+    @Provides
+    fun viewModel(inst: SearchViewModelImpl): SearchViewModel = inst
 }
