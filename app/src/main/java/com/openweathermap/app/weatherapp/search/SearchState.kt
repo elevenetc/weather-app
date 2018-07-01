@@ -4,7 +4,7 @@ import com.openweathermap.app.weatherapp.common.Weather
 
 private val EMPTY_WEATHER = Weather("empty-weather", 0f)
 
-class SearchState(val type: Type, val weather: Weather = EMPTY_WEATHER) {
+data class SearchState(val type: Type, val weather: Weather = EMPTY_WEATHER) {
 
     enum class Type {
         IDLE, PROGRESS, RESULT, NOT_FOUND, NETWORK_ERROR, NO_LOCATION_ERROR
@@ -17,7 +17,7 @@ class SearchState(val type: Type, val weather: Weather = EMPTY_WEATHER) {
     private fun validateState() {
         if ((type != Type.RESULT && weather != EMPTY_WEATHER) || type == Type.RESULT && weather == EMPTY_WEATHER) {
             throw IllegalArgumentException(
-                    "Only ${Type.RESULT} can have weather result. Type: $type, Weather: $weather"
+                    "Only ${Type.RESULT} can have weather. Type: $type, Weather: $weather"
             )
         }
     }

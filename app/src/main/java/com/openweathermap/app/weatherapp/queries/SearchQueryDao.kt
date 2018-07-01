@@ -10,8 +10,8 @@ import io.reactivex.Single
 @Dao
 interface SearchQueryDao {
 
-    @get:Query("SELECT * FROM `search-query` ORDER BY createdAt DESC")
-    val all: Single<List<SearchQuery>>
+    @Query("SELECT * FROM `search-query` ORDER BY createdAt DESC")
+    fun getAll(): Single<List<SearchQuery>>
 
     @Query("SELECT * FROM `search-query` ORDER BY createdAt DESC LIMIT 1")
     fun getLatest(): Single<SearchQuery>

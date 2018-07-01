@@ -14,17 +14,17 @@ class LocationModelImpl @Inject constructor(private val context: Context) : Loca
 
 
     @SuppressWarnings("MissingPermission")
-    override fun getCurrentLocation(): Single<Location> {
+    override fun getCurrentLocation(): Single<Loc> {
 
         val locProvider = LocationServices.getFusedLocationProviderClient(context)
 
-        return Single.fromObservable<Location> { observer ->
+        return Single.fromObservable<Loc> { observer ->
 
             locProvider.lastLocation.addOnSuccessListener(CurrentThreadExecutor(), OnSuccessListener<Location> { loc ->
                 if (loc == null) {
                     requestUpdate(locProvider, observer)
                 } else {
-                    observer.onNext(loc)
+                    observer.onNext(Loc(loc.latitude, loc.longitude))
                     observer.onComplete()
                 }
             })
@@ -32,7 +32,7 @@ class LocationModelImpl @Inject constructor(private val context: Context) : Loca
     }
 
     @SuppressWarnings("MissingPermission")
-    private fun requestUpdate(locProvider: FusedLocationProviderClient, observer: Observer<in Location>) {
+    private fun requestUpdate(locProvider: FusedLocationProviderClient, observer: Observer<in Loc>) {
         val request = LocationRequest()
         request.interval = 1000
         request.numUpdates = 1
@@ -47,7 +47,7 @@ class LocationModelImpl @Inject constructor(private val context: Context) : Loca
                 if (loc == null) {
                     completeWithError()
                 } else {
-                    observer.onNext(loc)
+                    observer.onNext(Loc(loc.latitude, loc.longitude))
                     observer.onComplete()
                 }
             }

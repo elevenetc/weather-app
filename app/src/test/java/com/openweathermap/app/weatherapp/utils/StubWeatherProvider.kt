@@ -1,4 +1,4 @@
-package com.openweathermap.app.weatherapp.stubs
+package com.openweathermap.app.weatherapp.utils
 
 import com.openweathermap.app.weatherapp.common.Weather
 import com.openweathermap.app.weatherapp.queries.SearchQuery
@@ -9,16 +9,16 @@ class StubWeatherProvider : WeatherProvider {
 
     private val weather: Single<Weather>
 
-    override fun findByQuery(query: SearchQuery): Single<Weather> {
-        return weather
-    }
-
     constructor(weather: Weather) {
         this.weather = Single.just(weather)
     }
 
     constructor(weather: Single<Weather>) {
         this.weather = weather
+    }
+
+    override fun findByQuery(query: SearchQuery): Single<Weather> {
+        return weather
     }
 
     override fun findByName(name: String): Single<Weather> {

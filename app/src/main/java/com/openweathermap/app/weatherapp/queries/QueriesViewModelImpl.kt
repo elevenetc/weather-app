@@ -9,10 +9,10 @@ import javax.inject.Inject
 
 class QueriesViewModelImpl @Inject constructor(private val model: WeatherModel) : QueriesViewModel {
 
-    override fun getQueries(): Observable<QueriesState> {
+    override fun getAllQueries(): Observable<QueriesState> {
         return concat(
                 just(QueriesState(PROGRESS)),
-                model.getRecentQueries().map { queries ->
+                model.getAllQueries().map { queries ->
                     if (queries.isEmpty()) {
                         QueriesState(EMPTY)
                     } else {
@@ -33,7 +33,7 @@ class QueriesViewModelImpl @Inject constructor(private val model: WeatherModel) 
         //TODO: Should be updated with extra states for blocking/removing only one item, but not all items
         return concat(
                 just(QueriesState(DELETING_QUERIES)),
-                model.deleteQuery(query).andThen(getQueries())
+                model.deleteQuery(query).andThen(getAllQueries())
         )
     }
 }

@@ -3,6 +3,8 @@ package com.openweathermap.app.weatherapp.weather.openweather
 import android.content.Context
 import com.openweathermap.app.weatherapp.BuildConfig
 import com.openweathermap.app.weatherapp.common.Names
+import com.openweathermap.app.weatherapp.queries.SearchQuery
+import com.openweathermap.app.weatherapp.queries.SearchQueryFactoryImpl
 import com.openweathermap.app.weatherapp.weather.WeatherModel
 import com.openweathermap.app.weatherapp.weather.WeatherModelImpl
 import com.openweathermap.app.weatherapp.weather.WeatherProvider
@@ -23,6 +25,9 @@ class OpenWeatherApiModule {
 
     @Provides
     fun weatherProvider(inst: OpenWeatherProvider): WeatherProvider = inst
+
+    @Provides
+    fun searchQueryFactory(inst: SearchQueryFactoryImpl): SearchQuery.Factory = inst
 
     @Provides
     @Named(Names.WEATHER_API_KEY)

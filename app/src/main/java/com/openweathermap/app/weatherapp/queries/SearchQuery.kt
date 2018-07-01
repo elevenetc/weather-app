@@ -8,6 +8,7 @@ import java.util.*
 @Entity(tableName = "search-query")
 class SearchQuery {
 
+
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
 
@@ -34,16 +35,10 @@ class SearchQuery {
     }
 
     companion object {
-
         const val DEFAULT_LOC = 1000.0
+    }
 
-        fun create(name: String = "", zip: String = "", lat: Double = DEFAULT_LOC, lon: Double = DEFAULT_LOC): SearchQuery {
-            val result = SearchQuery()
-            result.name = name
-            result.zipCode = zip
-            result.lat = lat
-            result.lon = lon
-            return result
-        }
+    interface Factory {
+        fun create(name: String = "", zip: String = "", lat: Double = DEFAULT_LOC, lon: Double = DEFAULT_LOC): SearchQuery
     }
 }

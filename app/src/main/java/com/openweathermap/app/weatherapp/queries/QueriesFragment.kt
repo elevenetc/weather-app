@@ -39,7 +39,7 @@ class QueriesFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        subs.add(viewModel.getQueries()
+        subs.add(viewModel.getAllQueries()
                 .subscribeOn(appComponent.schedulers().background())
                 .observeOn(appComponent.schedulers().ui())
                 .subscribe(handleState())

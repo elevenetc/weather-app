@@ -1,8 +1,12 @@
 package com.openweathermap.app.weatherapp.common.location
 
-import android.location.Location
 import io.reactivex.Single
 
 interface LocationModel {
-    fun getCurrentLocation(): Single<Location>
+    /**
+     * Returns current location or [com.openweathermap.app.weatherapp.common.exceptions.LocationNotAvailable]
+     *
+     * Client code must ask permission before calling this method
+     */
+    fun getCurrentLocation(): Single<Loc>
 }
