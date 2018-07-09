@@ -95,8 +95,11 @@ class SearchFragment : BaseFragment() {
 
     @OnClick(R.id.btn_search_for_current_location)
     fun searchForCurrentLocation() {
-        appComponent.permissions().checkLocationPermission(this) {
+        if (appComponent.permissions().isLocationGranted(this)) {
             getCurrentLocationAndFindWeather()
+        } else {
+            //TODO: add alert that informs user to give permission in app settings
+            appComponent.permissions().askLocPermissionDialogOrAppSettings(this)
         }
     }
 
