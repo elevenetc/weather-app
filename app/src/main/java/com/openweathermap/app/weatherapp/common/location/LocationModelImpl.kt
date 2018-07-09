@@ -21,6 +21,9 @@ class LocationModelImpl @Inject constructor(private val context: Context) : Loca
         return Single.fromObservable<Loc> { observer ->
 
             locProvider.lastLocation.addOnSuccessListener(CurrentThreadExecutor(), OnSuccessListener<Location> { loc ->
+
+                //TODO: add check if location staled or not accurate
+
                 if (loc == null) {
                     requestUpdate(locProvider, observer)
                 } else {
